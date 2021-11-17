@@ -110,9 +110,9 @@ def evaluate_model_ga(pop):
             model = define_model_ga(arr)
             callback = tf.keras.callbacks.EarlyStopping(patience=5)
             # fit model
-            model.fit(datagen.flow(trainX, trainY, batch_size=32,subset='training'), 
+            history = model.fit(datagen.flow(trainX, trainY, batch_size=32,subset='training'), 
                       validation_data=datagen.flow(trainX, trainY,batch_size=8, subset='validation'), 
-                      epochs=30,callbacks=[callback], verbose=1)
+                      epochs=50,callbacks=[callback], verbose=1) 
             #history = model.fit(trainX, trainY, epochs=20, batch_size=32, validation_split = 0.2, verbose=1, callbacks=[callback])
             # evaluate model
             _, acc = model.evaluate(testX, testY, verbose=0)

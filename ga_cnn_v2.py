@@ -11,7 +11,7 @@ The target is to maximize the accuracy of the cnn-mnist model:
     // Model hyper-parameters
     x1 = 32-128 filters in each CNN layer
     x2 = 50-100 neurons in first dense layer
-    x3 = no dropout, 0.1 dropout, 0.2 dropout
+    x3 = 0-0.2 dropout 
     x4 = learning rate 0.005 or 0.05 
     x5 = kernel size cnn 2-4
     
@@ -51,7 +51,7 @@ for generation in range(num_generations):
     print(fitness)
     
     # save the results into a list and do intemediate saving
-    generation_results.append({"fitness": fitness, "population": new_population})
+    generation_results.append({"fitness": fitness, "population": [chrom.tolist() for chrom in new_population]})
     with open(checkpoint_file, "w") as f: 
         json.dump(generation_results, f)
     

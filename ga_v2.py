@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 def selection(pop, fitness, num_parents):
     # We select the ones with the highest fitness

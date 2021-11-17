@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 from fashion_mnist_cnn_v2 import *
 from ga_v2 import * 
@@ -26,8 +27,8 @@ The target is to maximize the accuracy of the cnn-mnist model:
 num_weights = 9
 
 # solutions per populations and number of mating parents
-sol_per_pop = 6
-num_parents = 3
+sol_per_pop = 2
+num_parents = 1
 
 # Defining the population size.
 pop_size = (sol_per_pop,num_weights) # The population will have sol_per_pop chromosome where each chromosome has num_weights genes.
@@ -50,7 +51,7 @@ for generation in range(num_generations):
     print(fitness)
     
     # save the results into a list and do intemediate saving
-    generation_results.append({"fitness": fitness, "population": new_popolation})
+    generation_results.append({"fitness": fitness, "population": new_population})
     with open(checkpoint_file, "w") as f: 
         json.dump(generation_results, f)
     

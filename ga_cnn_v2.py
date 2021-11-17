@@ -27,8 +27,8 @@ The target is to maximize the accuracy of the cnn-mnist model:
 num_weights = 9
 
 # solutions per populations and number of mating parents
-sol_per_pop = 2
-num_parents = 1
+sol_per_pop = 8
+num_parents = 4
 
 # Defining the population size.
 pop_size = (sol_per_pop,num_weights) # The population will have sol_per_pop chromosome where each chromosome has num_weights genes.

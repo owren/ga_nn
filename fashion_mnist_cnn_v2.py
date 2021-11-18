@@ -58,6 +58,19 @@ The target is to maximize the accuracy of the cnn-mnist model:
     
     We will use a genetic algorithm to find the best combinations of these hyperparameters. 
     The fitness-function is based on model accuracy on test-dataset. 
+    
+    
+    Best so far with 92.29 % 
+        0.6151899027462715,
+        0.8630441247971613,
+        0.48568135841046134,
+        0.0032114426394213025,
+        0.30784428242021955,
+        0.1473845685726038,
+        0.3145443359129966,
+        0.07676705567952473,
+        0.4287397570066659
+      ]
 """
 
 def define_model_ga(hyperparameter_arr):

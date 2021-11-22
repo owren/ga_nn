@@ -1,6 +1,8 @@
 from fashion_mnist_cnn import *
 from ga import *
 
+import json
+
 
 """
 The target is to maximize the accuracy of the cnn-mnist model:
@@ -21,6 +23,7 @@ The target is to maximize the accuracy of the cnn-mnist model:
     We will use a genetic algorithm to find the best combinations of these hyperparameters. 
     The fitness-function is based on model accuracy on test-dataset. 
 """
+
 num_weights = 9
 
 # solutions per populations and number of mating parents
@@ -29,7 +32,7 @@ num_parents = 4
 
 # Defining the population size.
 pop_size = (sol_per_pop,num_weights) # The population will have sol_per_pop chromosome where each chromosome has num_weights genes.
-#Creating the initial population.
+# Creating the initial population.
 new_population = np.random.uniform(low=0, high=1, size=pop_size)
 print(new_population)
 

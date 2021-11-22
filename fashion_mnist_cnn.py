@@ -10,28 +10,43 @@ import tensorflow as tf
 device_name = "/gpu:0"
 
 
-# load train and test dataset
 def load_dataset():
+    """Loads Fashion MNIST dataset from keras datasets
+    Reshapes the dataset
+    One hot encodes target values
+
+    Returns:
+        trainX: Training data
+        trainY: Training data target
+        testX: Testing data
+        testY: Testing data target
+    """
     # load dataset
     (trainX, trainY), (testX, testY) = fashion_mnist.load_data()
+
     # reshape dataset to have a single channel
     trainX = trainX.reshape((trainX.shape[0], 28, 28, 1))
     testX = testX.reshape((testX.shape[0], 28, 28, 1))
+
     # one hot encode target values
     trainY = to_categorical(trainY)
     testY = to_categorical(testY)
     return trainX, trainY, testX, testY
 
-# scale pixels
+
 def prep_pixels(train, test):
+    """Scales pixels: converts values to float 32 and normalizes the data"""
     # convert from integers to floats
     train_norm = train.astype('float32')
     test_norm = test.astype('float32')
+
     # normalize to range 0-1
     train_norm = train_norm / 255.0
     test_norm = test_norm / 255.0
+
     # return normalized images
     return train_norm, test_norm
+
 
 """
 The target is to maximize the accuracy of the cnn-mnist model:
@@ -66,7 +81,17 @@ The target is to maximize the accuracy of the cnn-mnist model:
       ]
 """
 
+
 def define_model_ga(hyperparameter_arr):
+    """Defining and compiling the CNN model
+    Sets the hyperparameter for given model
+
+    Args:
+        hyperparameter_arr (numpy ndarray): array of hyperparameters
+
+    Returns:
+        model (keras sequential): The compiled CNN model
+    """
     # set hyperparameters based on array pop
     neurons_cnn = 32 + int((128-32+1) * hyperparameter_arr[0]) # min 32, max 128
     neurons_first = 50 + int((100-50+1)* hyperparameter_arr[1])
@@ -87,12 +112,24 @@ def define_model_ga(hyperparameter_arr):
     # compile model
     opt = SGD(lr=learning_rate, momentum=0.9)
     model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
-    
+
     return model
 
-def evaluate_model_ga(pop): 
+
+def evaluate_model_ga(pop):
+    """Evaluates the model
+    Loads and prepares the dataset
+    Runs one population of CNN models with augmented data
+
+    Args:
+        pop (numpy ndarray): array with all individuals in the population holding their chromosomes
+
+    Returns:
+        pop_scores (list): list of the accuracy of all individuals in the population
+    """
     # load dataset
     trainX, trainY, testX, testY = load_dataset()
+
     # prepare pixel data
     trainX, testX = prep_pixels(trainX, testX)
     
@@ -105,6 +142,7 @@ def evaluate_model_ga(pop):
             width_shift = 0.3*arr[6]
             height_shift = 0.3*arr[7]
             horizontal_flip = bool(int(2*arr[8]))
+
             # do data augmentation 
             datagen = ImageDataGenerator(
                 rotation_range=rotation_range,
@@ -112,14 +150,16 @@ def evaluate_model_ga(pop):
                 height_shift_range=height_shift,
                 horizontal_flip=horizontal_flip,
                 validation_split=0.2)
+
             # define model
             model = define_model_ga(arr)
             callback = tf.keras.callbacks.EarlyStopping(patience=5)
+
             # fit model
-            history = model.fit(datagen.flow(trainX, trainY, batch_size=32,subset='training'), 
-                      validation_data=datagen.flow(trainX, trainY,batch_size=8, subset='validation'), 
-                      epochs=50,callbacks=[callback], verbose=1) 
-            #history = model.fit(trainX, trainY, epochs=20, batch_size=32, validation_split = 0.2, verbose=1, callbacks=[callback])
+            history = model.fit(datagen.flow(trainX, trainY, batch_size=32,subset='training'),
+                                validation_data=datagen.flow(trainX, trainY,batch_size=8, subset='validation'),
+                                epochs=50, callbacks=[callback], verbose=1)
+
             # evaluate model
             _, acc = model.evaluate(testX, testY, verbose=0)
             pop_scores.append(acc)

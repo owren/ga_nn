@@ -1,8 +1,4 @@
 # baseline cnn model for fashion mnist
-from numpy import mean
-from numpy import std
-from matplotlib import pyplot
-from sklearn.model_selection import KFold
 from tensorflow.keras.datasets import fashion_mnist
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Sequential
@@ -10,9 +6,6 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropou
 from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import tensorflow as tf
-
-import sys
-
 
 device_name = "/gpu:0"
 

@@ -1,6 +1,3 @@
-import numpy as np
-import json
-
 from fashion_mnist_cnn import *
 from ga import *
 

@@ -1,8 +1,8 @@
 import numpy as np
 import json
 
-from fashion_mnist_cnn_v2 import *
-from ga_v2 import * 
+from fashion_mnist_cnn import *
+from ga import *
 
 
 """
